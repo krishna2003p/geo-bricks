@@ -8,7 +8,13 @@ const isValidImage = (imageUrl) => {
 
 const scrapeNewProjects = async (city) => {
   try {
-    const url = `https://www.magicbricks.com/new-projects-${city}`;
+    // const url = `https://www.magicbricks.com/new-projects-${city}`;
+    const targetUrl = `https://www.magicbricks.com/new-projects-${encodeURIComponent(city)}`;
+    // ScrapingBee proxy URL
+    const url = `https://app.scrapingbee.com/api/v1
+    ?api_key=${process.env.SCRAPINGBEE_API_KEY}
+    &url=${encodeURIComponent(targetUrl)}`.replace(/\s+/g, '');
+
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
@@ -20,7 +26,7 @@ const scrapeNewProjects = async (city) => {
       const location = $(el).find('.mghome__prjblk__locname').text().trim();
       const price = $(el).find('.mghome__prjblk__price').text().trim();
       const status = $(el).find('.mghome__prjblk__bhk').text().trim();
-      
+      const builder = $(el).find('.mghome__videocard__author__name').text().trim();
       // Extract image URL from src attribute
       let image = $(el).find('.mghome__prjblk__imgsec img').attr('src');
       console.log('Image URL:', image);
@@ -50,6 +56,7 @@ const scrapeNewProjects = async (city) => {
         image,
         link,
         details: projectDetails,
+        builder
       });
     });
 

@@ -7,6 +7,7 @@ export default function ProjectCard({ project }) {
     image,
     details = [],
     url,
+    builder
   } = project;
 
   return (
@@ -26,6 +27,7 @@ export default function ProjectCard({ project }) {
         <p className="text-sm text-gray-500 mb-1">{location}</p>
         <p className="text-sm font-medium text-blue-600">{price}</p>
         <p className="text-xs text-green-600">{status}</p>
+        <h5 className="text-xs text-black"><bold>By -</bold> {builder}</h5>
 
         {details?.length > 0 && (
           <ul className="mt-2 space-y-1 text-xs text-gray-600">
